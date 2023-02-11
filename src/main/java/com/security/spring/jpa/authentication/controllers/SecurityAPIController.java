@@ -1,12 +1,13 @@
 package com.security.spring.jpa.authentication.controllers;
 
+import com.security.spring.jpa.authentication.models.RoleDeMoi;
 import com.security.spring.jpa.authentication.models.User;
+import com.security.spring.jpa.authentication.services.RoleServiceInterface;
 import com.security.spring.jpa.authentication.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -19,22 +20,48 @@ public class SecurityAPIController {
 
 
     private UserService userService;
+    private RoleServiceInterface roleServiceInterface;
+    private PasswordEncoder passwordEncoder;
 
-    public SecurityAPIController(UserService userService) {
+    public SecurityAPIController(UserService userService, RoleServiceInterface roleServiceInterface, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.roleServiceInterface = roleServiceInterface;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/users")
-    public List<User> AllUserById(@RequestParam(required=false) Long id) {
-        List<User> listOfUser=new ArrayList<>();
-        if (id==null)return userService.getAllUser();
+    public List<User> AllUserById(@RequestParam(required = false) Long id) {
+        List<User> listOfUser = new ArrayList<>();
+        if (id == null) return userService.getAllUser();
         else return List.of(userService.getUserById(id));
     }
 
+    @GetMapping("/meendev")
+    public UserDetails Me(HttpServletRequest request) {
+        return (UserDetails) request.getUserPrincipal();
+    }
+
     @GetMapping("/me")
-    public String Me(HttpServletRequest request){
-        Principal principal= request.getUserPrincipal();
+    @ResponseBody
+    public String currentUserName(Principal principal) {
         return principal.getName();
     }
 
+    @PostMapping("/add-user")
+    public User addUser(@RequestBody User user) {
+        System.out.println(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        RoleDeMoi roleUser = roleServiceInterface.getByRoleNom("ROLE_USER");
+        user.setRoles(List.of(roleUser));
+        return userService.addUser(user);
+    }
+
+
+    @PostMapping("/change-role")
+    public User registerUser(@RequestBody Long id) {
+        User user =userService.getUserById(id);
+        RoleDeMoi rUser = roleServiceInterface.getByRoleNom("ROLE_USER");
+        user.setRoles(List.of(rUser));
+        return user;
+    }
 }
