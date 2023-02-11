@@ -1,9 +1,8 @@
 package com.security.spring.jpa.authentication.config;
 
-import com.security.spring.jpa.authentication.models.CustomRole;
-import com.security.spring.jpa.authentication.models.CustomUser;
+import com.security.spring.jpa.authentication.models.RoleDeMoi;
+import com.security.spring.jpa.authentication.models.User;
 import com.security.spring.jpa.authentication.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +20,8 @@ public class SecurityConfig {
 
     UserDetailsService userDetailsService;
 
-    @Value("${spring.h2.console.path}")
-    private String h2ConsolePath;
+/*    @Value("${spring.h2.console.path}")
+    private String h2ConsolePath;*/
 
     public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -40,7 +39,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/home/**", "/register/**", "", "/").permitAll()
-                        .requestMatchers(h2ConsolePath + "/**").authenticated()
+                        .requestMatchers(/*h2ConsolePath +*/ "/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/details/**").hasRole("USER")
                         .anyRequest().authenticated()
@@ -55,11 +54,11 @@ public class SecurityConfig {
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository) {
         return args -> {
-            CustomRole roleAdmin = new CustomRole("ROLE_ADMIN");
-            CustomRole roleUser = new CustomRole("ROLE_USER");
-            CustomUser user = new CustomUser("user",
+            RoleDeMoi roleDeMoiAdmin = new RoleDeMoi("ROLE_ADMIN");
+            RoleDeMoi roleDeMoiUser = new RoleDeMoi("ROLE_USER");
+            User user = new User("user",
                     passwordEncoder().encode("pass"),
-                    List.of(roleAdmin, roleUser)
+                    List.of(roleDeMoiAdmin, roleDeMoiUser)
             );
             userRepository.save(user);
         };

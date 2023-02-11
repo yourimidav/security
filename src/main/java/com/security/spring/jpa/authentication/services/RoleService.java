@@ -1,8 +1,7 @@
 package com.security.spring.jpa.authentication.services;
 
-import com.security.spring.jpa.authentication.models.CustomRole;
+import com.security.spring.jpa.authentication.models.RoleDeMoi;
 import com.security.spring.jpa.authentication.repositories.RoleRepository;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +15,9 @@ public class RoleService implements RoleServiceInterface {
     }
 
     @Override
-    public CustomRole getByRoleName(String roleName) throws UsernameNotFoundException {
-        return roleRepository.findbyRoleName(roleName).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("Role %s was not found!", roleName))
+    public RoleDeMoi getByRoleNom(String roleNom) throws UsernameNotFoundException {
+        return roleRepository.findbyRoleNom(roleNom).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("Role %s was not found!", roleNom))
         );
     }
 }

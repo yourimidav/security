@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class CustomUser {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,20 +19,21 @@ public class CustomUser {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
-    private List<CustomRole> roles;
 
-    public CustomUser() {
+    private List<RoleDeMoi> roleDeMois;
+
+    public User() {
     }
 
-    public CustomUser(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public CustomUser(String username, String password, List<CustomRole> roles) {
+    public User(String username, String password, List<RoleDeMoi> roleDeMois) {
         this.username = username;
         this.password = password;
-        this.roles = roles;
+        this.roleDeMois = roleDeMois;
     }
 
     public Long getId() {
@@ -59,11 +60,11 @@ public class CustomUser {
         this.password = password;
     }
 
-    public List<CustomRole> getRoles() {
-        return roles;
+    public List<RoleDeMoi> getRoles() {
+        return roleDeMois;
     }
 
-    public void setRoles(List<CustomRole> roles) {
-        this.roles = roles;
+    public void setRoles(List<RoleDeMoi> roleDeMois) {
+        this.roleDeMois = roleDeMois;
     }
 }

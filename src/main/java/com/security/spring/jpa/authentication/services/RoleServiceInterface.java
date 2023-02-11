@@ -1,7 +1,7 @@
 package com.security.spring.jpa.authentication.services;
 
-import com.security.spring.jpa.authentication.models.CustomRole;
+import com.security.spring.jpa.authentication.models.RoleDeMoi;
 
 public interface RoleServiceInterface {
-    CustomRole getByRoleName(String roleName);
+    RoleDeMoi getByRoleNom(String roleNom);
 }

@@ -4,18 +4,18 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "roles")
-public class CustomRole {
+public class RoleDeMoi {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String roleName;
+    private String RoleNom;
 
-    public CustomRole() {
+    public RoleDeMoi() {
     }
 
-    public CustomRole(String roleName) {
-        this.roleName = roleName;
+    public RoleDeMoi(String RoleNom) {
+        this.RoleNom = RoleNom;
     }
 
     public Long getId() {
@@ -26,11 +26,11 @@ public class CustomRole {
         this.id = id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getRoleNom() {
+        return RoleNom;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setRoleNom(String roleNom) {
+        this.RoleNom = roleNom;
     }
 }
