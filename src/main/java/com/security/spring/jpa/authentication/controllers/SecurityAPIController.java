@@ -2,11 +2,13 @@ package com.security.spring.jpa.authentication.controllers;
 
 import com.security.spring.jpa.authentication.models.User;
 import com.security.spring.jpa.authentication.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,4 +30,11 @@ public class SecurityAPIController {
         if (id==null)return userService.getAllUser();
         else return List.of(userService.getUserById(id));
     }
+
+    @GetMapping("/me")
+    public String Me(HttpServletRequest request){
+        Principal principal= request.getUserPrincipal();
+        return principal.getName();
+    }
+
 }

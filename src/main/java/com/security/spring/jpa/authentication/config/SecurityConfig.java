@@ -54,11 +54,11 @@ public class SecurityConfig {
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository) {
         return args -> {
-            RoleDeMoi roleDeMoiAdmin = new RoleDeMoi("ROLE_ADMIN");
-            RoleDeMoi roleDeMoiUser = new RoleDeMoi("ROLE_USER");
+            RoleDeMoi rAdmin = new RoleDeMoi("ROLE_ADMIN");
+            RoleDeMoi rUser = new RoleDeMoi("ROLE_USER");
             User user = new User("user",
                     passwordEncoder().encode("pass"),
-                    List.of(roleDeMoiAdmin, roleDeMoiUser)
+                    List.of(rAdmin, rUser)
             );
             userRepository.save(user);
         };
